@@ -4,6 +4,7 @@ let state = 'collect';
 let myX = [];
 let myY = [];
 let myVal = [];
+let train_length = 0; 
 
 function setup() {
   let cnv = createCanvas(800, 800);
@@ -54,6 +55,7 @@ function mousePressed(){
       y: target_y 
     };
     model.addData(inputs, target);
+    train_length += 1;
     }
   else if (state == 'predict'){
     model.predict(inputs, myResults);
@@ -68,7 +70,7 @@ function myResults(error, results){
   }
   console.log(results[0].y);
   val = results[0].y;
-  myVal.push(val)
+  myVal.push(val);
 }
 
 function aperson(x,y){
@@ -95,16 +97,15 @@ function draw(){
     textSize(15); 
     text('Press mouse again to create new humans', 250, 80); 
 
-    //let last = myX.length - 1;
+    let last = myX.length - 1;
     for (let i = 0; i < myX.length; i+=1){
       aperson(myX[i], myY[i]);
       }
-    
-    for (let i = 0; i < myX.length; i+=1){
-      if (myY[i] != myVal[i]){
-        let step = (myVal[i] - myY[i]) / 100;
-        myY[i] += step; 
-    }
+    for (let i =0; i<myVal.length; i+=1){
+      if (myY[train_length + i] != myVal[i]){
+        let step = (myVal[i] - myY[train_length+i]) / 100;
+        myY[train_length + i] += step; 
     }
   }
+}
 }

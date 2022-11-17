@@ -3,6 +3,7 @@ let state = 'collect';
 // for drawing purpose
 let myX = [];
 let myY = [];
+let myVal = [];
 
 function setup() {
   let cnv = createCanvas(800, 800);
@@ -59,14 +60,15 @@ function mousePressed(){
   }
 } 
 
-let myVal;
+let val;
 function myResults(error, results){
   if (error){
     console.error(error);
     return;
   }
   console.log(results[0].y);
-  myVal = results[0].y;
+  val = results[0].y;
+  myVal.push(val)
 }
 
 function aperson(x,y){
@@ -93,14 +95,16 @@ function draw(){
     textSize(15); 
     text('Press mouse again to create new humans', 250, 80); 
 
-    let last = myX.length - 1;
+    //let last = myX.length - 1;
     for (let i = 0; i < myX.length; i+=1){
       aperson(myX[i], myY[i]);
       }
-
-    if (myY[last] != myVal){
-      let step = (myVal - myY[last]) / 100;
-      myY[last] += step; 
+    
+    for (let i = 0; i < myX.length; i+=1){
+      if (myY[i] != myVal[i]){
+        let step = (myVal[i] - myY[i]) / 100;
+        myY[i] += step; 
+    }
     }
   }
 }
